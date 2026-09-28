@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+appsettings.*.local.json
+TestResults/
+coverage/
+node_modules/
+dist/
+
+# Machine-specific client settings; .env.example is committed.
+.env
+.env.local
+.env.*.local
