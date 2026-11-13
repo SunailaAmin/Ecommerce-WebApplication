@@ -2,7 +2,10 @@ bin/
 obj/
 .vs/
 .vscode/
+# `*.user` matches directories as well as files, and the User microservice folder is
+# named ECommerce.User — without the exclusion below git would ignore the whole project.
 *.user
+!src/ECommerce.User/
 *.suo
 appsettings.*.local.json
 TestResults/

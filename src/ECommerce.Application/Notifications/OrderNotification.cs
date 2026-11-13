@@ -12,3 +12,8 @@ public record OrderNotification(
     OrderStatus Status,
     string Message,
     DateTime OccurredAt);
+
+public static class OrderNotificationRoutes
+{
+    public const string Hub = "/hubs/order-notifications";
+}

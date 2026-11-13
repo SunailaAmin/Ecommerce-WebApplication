@@ -66,6 +66,7 @@ if (builder.Environment.IsDevelopment())
             .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowCredentials()
             .SetPreflightMaxAge(TimeSpan.FromMinutes(10)));
     });
 }
@@ -87,7 +88,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();

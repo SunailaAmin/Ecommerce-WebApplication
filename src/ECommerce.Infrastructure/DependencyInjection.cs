@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using ECommerce.Application.Caching;
 using ECommerce.Application.Interfaces;
+using ECommerce.Application.Notifications;
 using ECommerce.Application.OrderProcessing;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Authentication;
@@ -150,6 +151,22 @@ public static class DependencyInjection
                     ClockSkew = TimeSpan.Zero,
                     NameClaimType = ClaimTypes.Name,
                     RoleClaimType = ClaimTypes.Role
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            context.Request.Path.StartsWithSegments(OrderNotificationRoutes.Hub))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

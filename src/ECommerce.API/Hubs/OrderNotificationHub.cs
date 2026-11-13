@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using ECommerce.Application.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -15,7 +16,7 @@ namespace ECommerce.API.Hubs;
 [Authorize]
 public class OrderNotificationHub : Hub
 {
-    public const string Route = "/hubs/order-notifications";
+    public const string Route = OrderNotificationRoutes.Hub;
 
     public const string ClientMethod = "OrderNotification";
 

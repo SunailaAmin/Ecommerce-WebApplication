@@ -9,7 +9,7 @@ import { ErrorMessage, Loading } from '../components/States';
 export function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, restoring } = useAuth();
   const { addItem } = useCart();
 
   const [product, setProduct] = useState(null);
@@ -44,6 +44,8 @@ export function ProductDetail() {
 
   const onAddToCart = async (event) => {
     event.preventDefault();
+
+    if (restoring) return;
 
     if (!isAuthenticated) {
       navigate('/login', { state: { from: `/products/${id}` } });
@@ -102,14 +104,14 @@ export function ProductDetail() {
                 onChange={(event) => setQuantity(Math.max(1, Number(event.target.value) || 1))}
               />
             </label>
-            <button type="submit" className="button button-primary" disabled={adding || !product.isActive}>
-              {adding ? 'Adding...' : 'Add to cart'}
+            <button type="submit" className="button button-primary" disabled={adding || restoring || !product.isActive}>
+              {adding ? 'Adding...' : restoring ? 'Checking session...' : 'Add to cart'}
             </button>
           </form>
 
           {message && <p className="notice notice-success">{message}</p>}
           {addError && <ErrorMessage message={addError} />}
-          {!isAuthenticated && (
+          {!restoring && !isAuthenticated && (
             <p className="muted">You will be asked to sign in before adding to the cart.</p>
           )}
         </div>
